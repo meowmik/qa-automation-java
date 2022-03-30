@@ -2,19 +2,16 @@ package com.tcs.edu.decorator;
 
 import java.time.Instant;
 /**
- * Класс предназначен для обогащения строки
+ * Класс предназначен для обогащения строки текущей датой и временем
  * @author Сегида Татьяна
- *
  */
 public class TimestampMessageDecorator {
     /**
-     * Метод предназначен для обогащенния строки
-     * @param message строка, к которой нужно добавить текущее время
+     * Метод предназначен для обогащенния строки текущей датой, Перед переданной на вход строкой добавляется текущею дату и время
+     * @param message строка, к которой нужно добавить текущую дату и время
      * @return обогащённая строка
-     * @affect Метод ни на что не влияет
-     *
      */
-    public static String decorator(String message){
+    public static String decorat(String message){
         return Instant.now() + " " + message;
     }
 
