@@ -11,7 +11,7 @@ public class TimestampMessageDecorator {
      * @param message строка, к которой нужно добавить текущую дату и время
      * @return обогащённая строка
      */
-    public static String decorat(String message){
+    public static String decorate(String message){
         return Instant.now() + " " + message;
     }
 
