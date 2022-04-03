@@ -12,7 +12,9 @@ public class TimestampMessageDecorator {
      * @return обогащённая строка
      */
     public static String decorate(String message){
-        return Instant.now() + " " + message;
+        //noinspection UnnecessaryLocalVariable
+        String decoratedMessage = Instant.now() + " " + message;
+        return decoratedMessage;
     }
 
 }
