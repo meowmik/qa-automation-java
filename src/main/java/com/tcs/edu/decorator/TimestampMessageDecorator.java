@@ -15,7 +15,7 @@ public class TimestampMessageDecorator {
     public static String decorate(String message) {
         messageCount++;
         //noinspection UnnecessaryLocalVariable
-        var decoratedMessage = messageCount + " " + Instant.now() + " " + message;
+        final var decoratedMessage = messageCount + " " + Instant.now() + " " + message;
         return decoratedMessage;
     }
 
