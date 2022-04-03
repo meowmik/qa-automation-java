@@ -5,6 +5,9 @@ import com.tcs.edu.decorator.TimestampMessageDecorator;
 
 class Application {
     public static void main(String[] args) {
-        ConsolePrinter.print(TimestampMessageDecorator.decorate("Hello world!"));
+        for (int i = 0; i < 3; i++) {
+            ConsolePrinter.print(TimestampMessageDecorator.decorate("Hello world!"));
+        }
     }
 }
+
