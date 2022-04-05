@@ -1,6 +1,8 @@
 package com.tcs.edu.decorator;
 
 import java.time.Instant;
+
+
 /**
  * Класс предназначен для обогащения строки текущей датой и временем
  * @author Сегида Татьяна
@@ -15,7 +17,7 @@ public class TimestampMessageDecorator {
     public static String decorate(String message) {
         messageCount++;
         //noinspection UnnecessaryLocalVariable
-        final var decoratedMessage = messageCount + " " + Instant.now() + " " + message;
+        final var decoratedMessage = String.format("%d %s %s", messageCount, Instant.now(), message);
         return decoratedMessage;
     }
 
