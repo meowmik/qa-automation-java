@@ -6,13 +6,17 @@ import java.time.Instant;
  * @author Сегида Татьяна
  */
 public class TimestampMessageDecorator {
+    private static int messageCount = 0;
     /**
      * Метод предназначен для обогащенния строки текущей датой, Перед переданной на вход строкой добавляется текущею дату и время
      * @param message строка, к которой нужно добавить текущую дату и время
      * @return обогащённая строка
      */
-    public static String decorate(String message){
-        return Instant.now() + " " + message;
+    public static String decorate(String message) {
+        messageCount++;
+        //noinspection UnnecessaryLocalVariable
+        final var decoratedMessage = messageCount + " " + Instant.now() + " " + message;
+        return decoratedMessage;
     }
 
 }
