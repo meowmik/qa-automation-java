@@ -1,5 +1,7 @@
 package com.tcs.edu.decorator;
 
+import com.tcs.edu.printer.ConsolePrinter;
+
 import java.time.Instant;
 
 import static com.tcs.edu.decorator.ChoiceSeverity.choiceSeverity;
@@ -29,6 +31,19 @@ public class MessageService {
         } else
             decoratedMessage = String.format("%d %s %s %s", messageCount, Instant.now(), message, choiceSeverity(level));
         return decoratedMessage;
+    }
+
+
+    /**
+     * Метод предназначен для вывода сообщений в консоль.
+     * @param message строка не обогащённая строка
+     * @param level - приоритеты, которые добавятся к строке
+     */
+    public static void print (Severity level, String message, String... messages) {
+        ConsolePrinter.print(decorate(message, level));
+        for (String current : messages){
+            ConsolePrinter.print(decorate(current, level));
+        }
     }
 
 }
