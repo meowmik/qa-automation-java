@@ -1,21 +1,12 @@
 package com.tcs.edu.decorator;
 
-import com.tcs.edu.printer.ConsolePrinter;
-
 import java.time.Instant;
 
 import static com.tcs.edu.decorator.ChoiceSeverity.choiceSeverity;
 
-
-/**
- * Класс предназначен для обогащения строки.
- * @author Сегида Татьяна
- */
-public class MessageService {
-
-    private static int messageCount = 0;
-
+public class MessageDecorator {
     private static final int PAGE_SIZE = 3;
+    private static int messageCount = 0;
 
     /**
      * Метод предназначен для обогащенния строки порядковым номером, текущей датой и временем, а так же уровнем значимости. Ещё метод добавляет разграничение строк.
@@ -32,18 +23,4 @@ public class MessageService {
             decoratedMessage = String.format("%d %s %s %s", messageCount, Instant.now(), message, choiceSeverity(level));
         return decoratedMessage;
     }
-
-
-    /**
-     * Метод предназначен для вывода сообщений в консоль.
-     * @param message строка не обогащённая строка
-     * @param level - приоритеты, которые добавятся к строке
-     */
-    public static void print (Severity level, String message, String... messages) {
-        ConsolePrinter.print(decorate(message, level));
-        for (String current : messages){
-            ConsolePrinter.print(decorate(current, level));
-        }
-    }
-
 }
