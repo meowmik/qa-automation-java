@@ -23,6 +23,8 @@ public class ChoiceSeverity {
             case MAJOR:
                 severityString = "(!!!)";
                 break;
+            default:
+                break;
         }
         return severityString;
     }
