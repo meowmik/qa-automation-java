@@ -21,7 +21,12 @@ class Application {
                     }
 
         }
-        String[] array = new String[] {"Hello world!","Hello","World","Hi","Hello people","Hello java"};
+
+        String[] array = new String[10] ;
+        array[9] = "Hello world!9";
+        for (int i=0; i<7;i++){
+            array[i] = "Hello world!" + i;
+        }
         MessageService.print(Severity.REGULAR, array[0], array);
     }
 }

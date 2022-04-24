@@ -19,7 +19,10 @@ public class MessageService {
     public static void print (Severity level, String message, String... messages) {
         ConsolePrinter.print(MessageDecorator.decorate(message, level));
         for (String current : messages){
-            ConsolePrinter.print(MessageDecorator.decorate(current, level));
+            if (current != null) {
+                ConsolePrinter.print(MessageDecorator.decorate(current, level));
+            }
+
         }
     }
 
