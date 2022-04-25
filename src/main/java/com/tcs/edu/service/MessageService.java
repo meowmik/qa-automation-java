@@ -24,12 +24,16 @@ public class MessageService {
      * @param level   - приоритеты, которые добавятся к строке
      */
     public static void print(Severity level, String message, String... messages) {
-        ConsolePrinter.print(MessageDecorator.decorate(message, level));
-        for (String current : messages) {
-            if (current != null) {
-                ConsolePrinter.print(MessageDecorator.decorate(current, level));
-            }
+        if (message != null) {
+            ConsolePrinter.print(MessageDecorator.decorate(message, level));
+        }
+        if (messages != null) {
+            for (String current : messages) {
+                if (current != null) {
+                    ConsolePrinter.print(MessageDecorator.decorate(current, level));
+                }
 
+            }
         }
     }
 
@@ -41,20 +45,28 @@ public class MessageService {
      * @param order   - параметр сортировки сообщений
      */
     public static void print(MessageOrder order, Severity level, String message, String... messages) {
-        if (order == MessageOrder.ASC) {
-            ConsolePrinter.print(MessageDecorator.decorate(message, level));
-            for (String current : messages) {
-                if (current != null) {
-                    ConsolePrinter.print(MessageDecorator.decorate(current, level));
+        if (messages != null) {
+            if (order == MessageOrder.ASC) {
+                ConsolePrinter.print(MessageDecorator.decorate(message, level));
+                for (String current : messages) {
+                    if (current != null) {
+                        ConsolePrinter.print(MessageDecorator.decorate(current, level));
+                    }
+                }
+            } else {
+                for (int i = messages.length - 1; i >= 0; i--) {
+                    if (messages[i] != null) {
+                        ConsolePrinter.print(MessageDecorator.decorate(messages[i], level));
+                    }
+                }
+                if (message != null) {
+                    ConsolePrinter.print(MessageDecorator.decorate(message, level));
                 }
             }
         } else {
-            for (int i = messages.length - 1; i >= 0; i--) {
-                if (messages[i] != null) {
-                    ConsolePrinter.print(MessageDecorator.decorate(messages[i], level));
-                }
+            if (message != null) {
+                ConsolePrinter.print(MessageDecorator.decorate(message, level));
             }
-            ConsolePrinter.print(MessageDecorator.decorate(message, level));
         }
     }
 
@@ -93,12 +105,18 @@ public class MessageService {
      */
     public static void print(Doubling doubling, MessageOrder order, Severity level, String message, String... messages) {
         if (doubling == Doubling.DISTINCT) {
-            String[] array = new String[messages.length + 1];
-            array[0] = message;
-            System.arraycopy(messages, 0, array, 1, array.length - 1);
-            String[] newArray = clean(array);
-            String[] newArray2 = Arrays.copyOfRange(newArray, 1, newArray.length);
-            print(order, level, newArray[0], newArray2);
+            if (messages != null) {
+                String[] array = new String[messages.length + 1];
+                array[0] = message;
+                System.arraycopy(messages, 0, array, 1, array.length - 1);
+                String[] newArray = clean(array);
+                String[] newArray2 = Arrays.copyOfRange(newArray, 1, newArray.length);
+                print(order, level, newArray[0], newArray2);
+            } else{
+                if (message != null){
+                    print(order, level, message);
+                }
+            }
         } else {
             print(order, level, message, messages);
         }

@@ -18,7 +18,6 @@ class Application {
             } else {
                 ConsolePrinter.print(MessageDecorator.decorate("Hello world!", Severity.REGULAR));
             }
-
         }
         //Заполнение массива
         String[] array = new String[10];
@@ -28,6 +27,10 @@ class Application {
         for (int i = 0; i < 5; i++) {
             array[i] = "Hello world!" + i;
         }
+        //Проверки, когда приходит null в messages и message
+        MessageService.print(Severity.REGULAR, null);
+        MessageService.print(Severity.REGULAR, "message");
+        MessageService.print(Severity.REGULAR, null, array);
         //Проверка метода api MessageService.print без параметра сортировкки
         MessageService.print(Severity.REGULAR, array[0], array);
         //Проверки метода api MessageService.print с параметром сортировки
@@ -39,6 +42,7 @@ class Application {
         //Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
         MessageService.print(Doubling.DOUBLES, MessageOrder.ASC, Severity.REGULAR, array[0], array);
         MessageService.print(Doubling.DOUBLES, MessageOrder.DESC, Severity.REGULAR, array[0], array);
+
 
     }
 }
