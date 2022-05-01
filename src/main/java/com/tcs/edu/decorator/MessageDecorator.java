@@ -4,7 +4,7 @@ import java.time.Instant;
 
 import static com.tcs.edu.decorator.ChoiceSeverity.choiceSeverity;
 
-public class MessageDecorator {
+public class MessageDecorator implements Decorator{
     private static final int PAGE_SIZE = 3;
     private static int messageCount = 0;
 
@@ -14,7 +14,7 @@ public class MessageDecorator {
      * @param level - приоритет, который с помощью метода choiceSeverity конвертируется в уровень значимости
      * @return обогащённая строка
      */
-    public static String decorate(String message, Severity level) {
+    public String decorate(String message, Severity level) {
         messageCount++;
         String decoratedMessage;
         if (messageCount % PAGE_SIZE == 0) {

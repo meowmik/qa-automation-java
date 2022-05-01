@@ -32,23 +32,25 @@ class Application {
         Message message = new Message("message");
 
 
+        MessageService messageService = new MessageService();
+
         //Проверки, когда приходит null в messages и message
-        MessageService.print(null, null);
-        MessageService.print(message);
-        MessageService.print(null, array);
+        messageService.print(null, null);
+        messageService.print(message);
+        messageService.print(null, array);
 
         //Проверка метода api MessageService.print без параметра сортировкки
-        MessageService.print(array[0], array);
+        messageService.print(array[0], array);
         //Проверки метода api MessageService.print с параметром сортировки
-        MessageService.print(MessageOrder.ASC, array[0], array);
-        MessageService.print(MessageOrder.DESC, array[0], array);
+        messageService.print(MessageOrder.ASC, array[0], array);
+        messageService.print(MessageOrder.DESC, array[0], array);
 
         //Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
-        MessageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
-        MessageService.print(Doubling.DISTINCT, MessageOrder.DESC, array[0], array);
+        messageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
+        messageService.print(Doubling.DISTINCT, MessageOrder.DESC, array[0], array);
         //Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
-        MessageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
-        MessageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
+        messageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
+        messageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
 
     }
 }

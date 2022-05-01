@@ -4,13 +4,13 @@ package com.tcs.edu.printer;
  * Класс предназначен для вывода информации в консоль
  * @author Сегида Татьяна
  */
-public class ConsolePrinter {
+public class ConsolePrinter implements Printer{
 
     /**
      * Метод предназначен для вывода переданной строки в консоль
      * @param message строка, которую нужно вывести в консолль
      */
-    public static void print(String message) {
+    public void print(String message) {
         System.out.println(message);
     }
 }

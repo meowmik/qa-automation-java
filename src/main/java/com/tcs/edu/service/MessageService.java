@@ -14,7 +14,9 @@ import java.util.Objects;
  *
  * @author Сегида Татьяна
  */
-public class MessageService {
+public  class MessageService implements Service{
+    final private ConsolePrinter printer = new ConsolePrinter();
+    final private MessageDecorator decorator = new MessageDecorator();
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
     private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
 
@@ -23,7 +25,7 @@ public class MessageService {
      *
      * @param message - строка не обогащённая строка
      */
-    public static void print(Message message, Message... messages) {
+    public void print(Message message, Message... messages) {
         print(DEFAULT_ORDER, message, messages);
     }
 
@@ -33,7 +35,7 @@ public class MessageService {
      * @param message - строка не обогащённая строка
      * @param order   - параметр сортировки сообщений
      */
-    public static void print(MessageOrder order, Message message, Message... messages) {
+    public void print(MessageOrder order, Message message, Message... messages) {
         print(DEFAULT_DOUBLING, order, message, messages);
     }
 
@@ -44,11 +46,11 @@ public class MessageService {
      * @param order    - параметр сортировки сообщений
      * @param doubling - признак отстутствия или существования дублирования
      */
-    public static void print(Doubling doubling, MessageOrder order, Message message, Message... messages) {
+    public void print(Doubling doubling, MessageOrder order, Message message, Message... messages) {
         Message[] newMessages = join(message, messages);
         newMessages = sort(order, newMessages);
         newMessages = modifyDoubles(doubling, newMessages);
-        print(newMessages);
+        privatePrint(newMessages);
     }
 
     private static Message[] join(Message message, Message... messages) {
@@ -73,10 +75,10 @@ public class MessageService {
     }
 
 
-    private static void print(Message... messages) {
+    private void privatePrint(Message... messages) {
         for (Message current : messages) {
             if (current != null) {
-                ConsolePrinter.print(MessageDecorator.decorate(current.getBody(), current.getLevel()));
+                printer.print(decorator.decorate(current.getBody(), current.getLevel()));
             }
         }
     }
