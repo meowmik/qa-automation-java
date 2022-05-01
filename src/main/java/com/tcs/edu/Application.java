@@ -6,6 +6,7 @@ import com.tcs.edu.decorator.MessageOrder;
 import com.tcs.edu.decorator.Severity;
 import com.tcs.edu.printer.ConsolePrinter;
 import com.tcs.edu.service.MessageService;
+import com.tcs.edu.service.Service;
 
 class Application {
     public static void main(String[] args) {
@@ -32,7 +33,7 @@ class Application {
         Message message = new Message("message");
 
 
-        MessageService messageService = new MessageService();
+        Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
 
         //Проверки, когда приходит null в messages и message
         messageService.print(null, null);

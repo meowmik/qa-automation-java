@@ -1,10 +1,12 @@
 package com.tcs.edu.service;
 
 import com.tcs.edu.Message;
+import com.tcs.edu.decorator.Decorator;
 import com.tcs.edu.decorator.Doubling;
 import com.tcs.edu.decorator.MessageDecorator;
 import com.tcs.edu.decorator.MessageOrder;
 import com.tcs.edu.printer.ConsolePrinter;
+import com.tcs.edu.printer.Printer;
 
 import java.util.Objects;
 
@@ -14,11 +16,17 @@ import java.util.Objects;
  *
  * @author Сегида Татьяна
  */
-public  class MessageService implements Service{
-    final private ConsolePrinter printer = new ConsolePrinter();
-    final private MessageDecorator decorator = new MessageDecorator();
+public class MessageService implements Service {
+    private final Printer printer;
+    private final Decorator decorator;
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
     private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
+
+    public MessageService(Printer consolePrinter, Decorator messageDecorator) {
+        this.decorator = messageDecorator;
+        this.printer = consolePrinter;
+
+    }
 
     /**
      * Метод предназначен для вывода сообщений в консоль.
