@@ -10,7 +10,7 @@ import com.tcs.edu.service.MessageService;
 class Application {
     public static void main(String[] args) {
         //Пример проверки кода без использования api MessageService
-        for (int i = 0; i < 6; i++) {
+       /* for (int i = 0; i < 6; i++) {
             if (i == 0 || i == 4) {
                 ConsolePrinter.print(MessageDecorator.decorate("Hello world!", Severity.MINOR));
             } else if (i == 3 || i == 5) {
@@ -18,31 +18,37 @@ class Application {
             } else {
                 ConsolePrinter.print(MessageDecorator.decorate("Hello world!", Severity.REGULAR));
             }
-        }
-        //Заполнение массива
-        String[] array = new String[10];
-        array[9] = "Hello world!9";
-        array[6] = "Hello world!";
-        array[7] = "Hello world!";
-        for (int i = 0; i < 5; i++) {
-            array[i] = "Hello world!" + i;
-        }
-        //Проверки, когда приходит null в messages и message
-        MessageService.print(Severity.REGULAR, null);
-        MessageService.print(Severity.REGULAR, "message");
-        MessageService.print(Severity.REGULAR, null, array);
-        //Проверка метода api MessageService.print без параметра сортировкки
-        MessageService.print(Severity.REGULAR, array[0], array);
-        //Проверки метода api MessageService.print с параметром сортировки
-        MessageService.print(MessageOrder.ASC, Severity.REGULAR, array[0], array);
-        MessageService.print(MessageOrder.DESC, Severity.REGULAR, array[0], array);
-        //Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
-        MessageService.print(Doubling.DISTINCT, MessageOrder.ASC, Severity.REGULAR, array[0], array);
-        MessageService.print(Doubling.DISTINCT, MessageOrder.DESC, Severity.REGULAR, array[0], array);
-        //Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
-        MessageService.print(Doubling.DOUBLES, MessageOrder.ASC, Severity.REGULAR, array[0], array);
-        MessageService.print(Doubling.DOUBLES, MessageOrder.DESC, Severity.REGULAR, array[0], array);
+        }*/
 
+        //Заполнение массива
+        Message[] array = new Message[10];
+        array[9] = new Message(Severity.MINOR, "Hello world!9");
+        array[6] = new Message("Hello world!");
+        array[7] = new Message("Hello world!");
+        array[5] = new Message(Severity.MAJOR, "Hello world!");
+        for (int i = 0; i < 4; i++) {
+            array[i] = new Message("Hello world!" + i);
+        }
+        Message message = new Message("message");
+
+
+        //Проверки, когда приходит null в messages и message
+        MessageService.print(null, null);
+        MessageService.print(message);
+        MessageService.print(null, array);
+
+        //Проверка метода api MessageService.print без параметра сортировкки
+        MessageService.print(array[0], array);
+        //Проверки метода api MessageService.print с параметром сортировки
+        MessageService.print(MessageOrder.ASC, array[0], array);
+        MessageService.print(MessageOrder.DESC, array[0], array);
+
+        //Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
+        MessageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
+        MessageService.print(Doubling.DISTINCT, MessageOrder.DESC, array[0], array);
+        //Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
+        MessageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
+        MessageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
 
     }
 }
