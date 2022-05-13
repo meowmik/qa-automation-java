@@ -5,6 +5,7 @@ import com.tcs.edu.decorator.MessageDecorator;
 import com.tcs.edu.decorator.MessageOrder;
 import com.tcs.edu.decorator.Severity;
 import com.tcs.edu.printer.ConsolePrinter;
+import com.tcs.edu.printer.ConsolePrinterError;
 import com.tcs.edu.service.MessageService;
 import com.tcs.edu.service.Service;
 
@@ -34,24 +35,26 @@ class Application {
 
 
         Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
+        //Service messageService = new MessageService(new ConsolePrinterError(), new MessageDecorator());
+
 
         //Проверки, когда приходит null в messages и message
-        messageService.print(null, null);
-        messageService.print(message);
-        messageService.print(null, array);
+       // messageService.print(null, null);
+        //messageService.print(message);
+       //messageService.print(null, array);
 
         //Проверка метода api MessageService.print без параметра сортировкки
-        messageService.print(array[0], array);
+        //messageService.print(array[0], array);
         //Проверки метода api MessageService.print с параметром сортировки
-        messageService.print(MessageOrder.ASC, array[0], array);
-        messageService.print(MessageOrder.DESC, array[0], array);
+        //messageService.print(MessageOrder.ASC, array[0], array);
+        //messageService.print(MessageOrder.DESC, array[0], array);
 
         //Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
-        messageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
+        //messageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
         messageService.print(Doubling.DISTINCT, MessageOrder.DESC, array[0], array);
         //Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
-        messageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
-        messageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
+        //messageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
+        //messageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
 
     }
 }
