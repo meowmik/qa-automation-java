@@ -15,7 +15,7 @@ import java.util.Objects;
  *
  * @author Сегида Татьяна
  */
-public class MessageService implements Service {
+public class MessageService extends ValidatedService implements Service {
     private final Printer printer;
     private final Decorator decorator;
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
@@ -62,7 +62,7 @@ public class MessageService implements Service {
     }
 
     private Message[] join(Message message, Message... messages) {
-        if (messages == null || messages.length == 0) {
+        if (!isArrayValid(messages)) {
             return new Message[]{message};
         }
         Message[] newArray = new Message[messages.length + 1];
@@ -70,18 +70,6 @@ public class MessageService implements Service {
         System.arraycopy(messages, 0, newArray, 1, messages.length);
         return newArray;
 
-    }
-    private Message[] cleanNull(Message[] messages){
-        Message[] array = new  Message[messages.length];
-        int i=0;
-        for(Message current : messages){
-            if (current != null){
-                array[i++] = current;
-            }
-        }
-        Message[] newArray = new Message[i];
-        System.arraycopy(array, 0, newArray, 0, i);
-    return newArray;
     }
 
 
