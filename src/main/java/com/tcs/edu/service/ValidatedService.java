@@ -2,7 +2,7 @@ package com.tcs.edu.service;
 
 import com.tcs.edu.Message;
 
-public class ValidatedService {
+public abstract class ValidatedService {
     public Message[] cleanNull(Message[] messages){
         Message[] array = new  Message[messages.length];
         int i=0;
