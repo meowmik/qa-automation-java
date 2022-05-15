@@ -79,7 +79,7 @@ public class MessageService extends ValidatedService implements Service {
         }
     }
 
-    private  Message[] sort(MessageOrder order, Message... messages) {
+    private Message[] sort(MessageOrder order, Message... messages) {
         if (order == MessageOrder.ASC) {
             return messages;
         }
@@ -92,7 +92,7 @@ public class MessageService extends ValidatedService implements Service {
         return newMessages;
     }
 
-    private  Message[] modifyDoubles(Doubling doubling, Message... messages) {
+    private Message[] modifyDoubles(Doubling doubling, Message... messages) {
         if (doubling == Doubling.DOUBLES) {
             return messages;
         }
@@ -102,7 +102,7 @@ public class MessageService extends ValidatedService implements Service {
             int j = 0;
             boolean flag = false;
             while (j < clean.length && !flag) {
-                if (clean[j] != null && Objects.equals(clean[j].getBody(), s.getBody())) {
+                if (isParamValid(clean[j]) && clean[j].equals(s)) {
                     flag = true;
                 }
                 j++;

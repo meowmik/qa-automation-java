@@ -23,11 +23,12 @@ class Application {
         }*/
 
         //Заполнение массива
-        Message[] array = new Message[10];
+        Message[] array = new Message[11];
         array[9] = new Message(Severity.MINOR, "Hello world!9");
         array[6] = new Message("Hello world!");
         array[7] = new Message("Hello world!");
         array[5] = new Message(Severity.MAJOR, "Hello world!");
+        array[10] = new Message(Severity.MAJOR, "Hello world!");
         for (int i = 0; i < 4; i++) {
             array[i] = new Message("Hello world!" + i);
         }
@@ -35,26 +36,47 @@ class Application {
 
 
         Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
-        //Service messageService = new MessageService(new ConsolePrinterError(), new MessageDecorator());
+
+//        Проверка выполнения контракта equals()/hashCode()
+        System.out.println(array[6].hashCode());
+        System.out.println(array[7].hashCode());
+        if (array[7].hashCode() == array[6].hashCode()) {
+            System.out.println("OK");
+        }
+
+//        Проверки сравнения через equals()
+        //объекты равны
+        System.out.println(array[6]);
+        System.out.println(array[7]);
+        if (array[7].equals(array[6])) {
+            System.out.println("OK");
+        } else System.out.println("NOT OK");
+
+        //объекты не равны
+        System.out.println(array[6]);
+        System.out.println(array[7]);
+        if (array[7].equals(array[5])) {
+            System.out.println("OK");
+        } else System.out.println("NOT OK");
 
 
-        //Проверки, когда приходит null в messages и message
-       // messageService.print(null, null);
-        //messageService.print(message);
-       //messageService.print(null, array);
+//        Проверки, когда приходит null в messages и message
+        messageService.print(null, null);
+        messageService.print(message);
+        messageService.print(null, array);
 
-        //Проверка метода api MessageService.print без параметра сортировкки
-        //messageService.print(array[0], array);
-        //Проверки метода api MessageService.print с параметром сортировки
-        //messageService.print(MessageOrder.ASC, array[0], array);
-        //messageService.print(MessageOrder.DESC, array[0], array);
+//        Проверка метода api MessageService.print без параметра сортировкки
+        messageService.print(array[0], array);
+//        Проверки метода api MessageService.print с параметром сортировки
+        messageService.print(MessageOrder.ASC, array[0], array);
+        messageService.print(MessageOrder.DESC, array[0], array);
 
-        //Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
-        //messageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
+//        Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
+        messageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
         messageService.print(Doubling.DISTINCT, MessageOrder.DESC, array[0], array);
-        //Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
-        //messageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
-        //messageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
+//        Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
+        messageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
+        messageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
 
     }
 }
