@@ -11,6 +11,7 @@ import com.tcs.edu.service.Service;
 
 class Application {
     final static Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
+    final  static MessageService messageService2 = new MessageService(new ConsolePrinter(), new MessageDecorator());
 
     public static void main(String[] args) {
         checkEquals();
@@ -25,6 +26,8 @@ class Application {
         checkDoubling(Doubling.DISTINCT);
         checkDoubling(Doubling.DOUBLES);
 
+
+
     }
 
     private static void checkEquals() {
@@ -38,14 +41,14 @@ class Application {
         System.out.println(message2);
         if (message2.equals(message3)) {
             System.out.println("OK");
-        } else System.out.println("NOT OK");
+        } else System.err.println("NOT OK");
 
         //объекты не равны
         System.out.println(message1);
         System.out.println(message2);
         if (message2.equals(message1)) {
             System.out.println("OK");
-        } else System.out.println("NOT OK");
+        } else System.err.println("NOT OK");
     }
 
     private static void checkEqualsAndHash() {

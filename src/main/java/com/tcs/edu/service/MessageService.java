@@ -43,9 +43,7 @@ public class MessageService extends ValidatedService implements Service {
      * @param order   - параметр сортировки сообщений
      */
     public void print(MessageOrder order, Message message, Message... messages) {
-        if (isOrderValid(order)) {
             print(DEFAULT_DOUBLING, order, message, messages);
-        }
     }
 
     /**
@@ -56,13 +54,12 @@ public class MessageService extends ValidatedService implements Service {
      * @param doubling - признак отстутствия или существования дублирования
      */
     public void print(Doubling doubling, MessageOrder order, Message message, Message... messages) {
-        if (isOrderValid(order) && isDoublingValid(doubling)) {
-            Message[] newMessages = join(message, messages);
-            newMessages = cleanNull(newMessages);
-            newMessages = sort(order, newMessages);
-            newMessages = modifyDoubles(doubling, newMessages);
-            privatePrint(newMessages);
-        }
+        if (!isOrderValid(order) || !isDoublingValid(doubling)) return;
+        Message[] newMessages = join(message, messages);
+        newMessages = cleanNull(newMessages);
+        newMessages = sort(order, newMessages);
+        newMessages = modifyDoubles(doubling, newMessages);
+        privatePrint(newMessages);
     }
 
     private Message[] join(Message message, Message... messages) {
