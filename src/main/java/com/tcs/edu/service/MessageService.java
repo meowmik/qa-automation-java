@@ -15,7 +15,7 @@ import java.util.Objects;
  *
  * @author Сегида Татьяна
  */
-public class MessageService implements Service {
+public class MessageService extends ValidatedService implements Service {
     private final Printer printer;
     private final Decorator decorator;
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
@@ -43,7 +43,7 @@ public class MessageService implements Service {
      * @param order   - параметр сортировки сообщений
      */
     public void print(MessageOrder order, Message message, Message... messages) {
-        print(DEFAULT_DOUBLING, order, message, messages);
+            print(DEFAULT_DOUBLING, order, message, messages);
     }
 
     /**
@@ -54,6 +54,7 @@ public class MessageService implements Service {
      * @param doubling - признак отстутствия или существования дублирования
      */
     public void print(Doubling doubling, MessageOrder order, Message message, Message... messages) {
+        if (!isOrderValid(order) || !isDoublingValid(doubling)) return;
         Message[] newMessages = join(message, messages);
         newMessages = cleanNull(newMessages);
         newMessages = sort(order, newMessages);
@@ -62,7 +63,7 @@ public class MessageService implements Service {
     }
 
     private Message[] join(Message message, Message... messages) {
-        if (messages == null || messages.length == 0) {
+        if (!isArrayValid(messages)) {
             return new Message[]{message};
         }
         Message[] newArray = new Message[messages.length + 1];
@@ -71,17 +72,18 @@ public class MessageService implements Service {
         return newArray;
 
     }
-    private Message[] cleanNull(Message[] messages){
-        Message[] array = new  Message[messages.length];
-        int i=0;
-        for(Message current : messages){
-            if (current != null){
+
+    private Message[] cleanNull(Message[] messages) {
+        Message[] array = new Message[messages.length];
+        int i = 0;
+        for (Message current : messages) {
+            if (isParamValid(current)) {
                 array[i++] = current;
             }
         }
         Message[] newArray = new Message[i];
         System.arraycopy(array, 0, newArray, 0, i);
-    return newArray;
+        return newArray;
     }
 
 
@@ -91,7 +93,7 @@ public class MessageService implements Service {
         }
     }
 
-    private  Message[] sort(MessageOrder order, Message... messages) {
+    private Message[] sort(MessageOrder order, Message... messages) {
         if (order == MessageOrder.ASC) {
             return messages;
         }
@@ -104,7 +106,7 @@ public class MessageService implements Service {
         return newMessages;
     }
 
-    private  Message[] modifyDoubles(Doubling doubling, Message... messages) {
+    private Message[] modifyDoubles(Doubling doubling, Message... messages) {
         if (doubling == Doubling.DOUBLES) {
             return messages;
         }
@@ -114,7 +116,7 @@ public class MessageService implements Service {
             int j = 0;
             boolean flag = false;
             while (j < clean.length && !flag) {
-                if (clean[j] != null && Objects.equals(clean[j].getBody(), s.getBody())) {
+                if (clean[j] != null && clean[j].equals(s)) {
                     flag = true;
                 }
                 j++;
