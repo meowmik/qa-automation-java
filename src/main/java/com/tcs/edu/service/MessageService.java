@@ -43,7 +43,9 @@ public class MessageService extends ValidatedService implements Service {
      * @param order   - параметр сортировки сообщений
      */
     public void print(MessageOrder order, Message message, Message... messages) {
-        print(DEFAULT_DOUBLING, order, message, messages);
+        if (isOrderValid(order)) {
+            print(DEFAULT_DOUBLING, order, message, messages);
+        }
     }
 
     /**
@@ -54,11 +56,13 @@ public class MessageService extends ValidatedService implements Service {
      * @param doubling - признак отстутствия или существования дублирования
      */
     public void print(Doubling doubling, MessageOrder order, Message message, Message... messages) {
-        Message[] newMessages = join(message, messages);
-        newMessages = cleanNull(newMessages);
-        newMessages = sort(order, newMessages);
-        newMessages = modifyDoubles(doubling, newMessages);
-        privatePrint(newMessages);
+        if (isOrderValid(order) && isDoublingValid(doubling)) {
+            Message[] newMessages = join(message, messages);
+            newMessages = cleanNull(newMessages);
+            newMessages = sort(order, newMessages);
+            newMessages = modifyDoubles(doubling, newMessages);
+            privatePrint(newMessages);
+        }
     }
 
     private Message[] join(Message message, Message... messages) {
@@ -70,6 +74,19 @@ public class MessageService extends ValidatedService implements Service {
         System.arraycopy(messages, 0, newArray, 1, messages.length);
         return newArray;
 
+    }
+
+    private Message[] cleanNull(Message[] messages) {
+        Message[] array = new Message[messages.length];
+        int i = 0;
+        for (Message current : messages) {
+            if (isParamValid(current)) {
+                array[i++] = current;
+            }
+        }
+        Message[] newArray = new Message[i];
+        System.arraycopy(array, 0, newArray, 0, i);
+        return newArray;
     }
 
 
@@ -102,7 +119,7 @@ public class MessageService extends ValidatedService implements Service {
             int j = 0;
             boolean flag = false;
             while (j < clean.length && !flag) {
-                if (isParamValid(clean[j]) && clean[j].equals(s)) {
+                if (clean[j] != null && clean[j].equals(s)) {
                     flag = true;
                 }
                 j++;

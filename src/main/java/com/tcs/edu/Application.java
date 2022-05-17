@@ -10,74 +10,107 @@ import com.tcs.edu.service.MessageService;
 import com.tcs.edu.service.Service;
 
 class Application {
+    final static Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
+
     public static void main(String[] args) {
-        //Пример проверки кода без использования api MessageService
-       /* for (int i = 0; i < 6; i++) {
-            if (i == 0 || i == 4) {
-                ConsolePrinter.print(MessageDecorator.decorate("Hello world!", Severity.MINOR));
-            } else if (i == 3 || i == 5) {
-                ConsolePrinter.print(MessageDecorator.decorate("Hello world!", Severity.MAJOR));
-            } else {
-                ConsolePrinter.print(MessageDecorator.decorate("Hello world!", Severity.REGULAR));
-            }
-        }*/
+        checkEquals();
+        checkEqualsAndHash();
+        checkValidateParams();
 
-        //Заполнение массива
-        Message[] array = new Message[11];
-        array[9] = new Message(Severity.MINOR, "Hello world!9");
-        array[6] = new Message("Hello world!");
-        array[7] = new Message("Hello world!");
-        array[5] = new Message(Severity.MAJOR, "Hello world!");
-        array[10] = new Message(Severity.MAJOR, "Hello world!");
-        for (int i = 0; i < 4; i++) {
-            array[i] = new Message("Hello world!" + i);
-        }
-        Message message = new Message("message");
+        checkPrintMessage();
 
+        checkOrder(MessageOrder.ASC);
+        checkOrder(MessageOrder.DESC);
 
-        Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
+        checkDoubling(Doubling.DISTINCT);
+        checkDoubling(Doubling.DOUBLES);
 
-//        Проверка выполнения контракта equals()/hashCode()
-        System.out.println(array[6].hashCode());
-        System.out.println(array[7].hashCode());
-        if (array[7].hashCode() == array[6].hashCode()) {
-            System.out.println("OK");
-        }
+    }
 
-//        Проверки сравнения через equals()
+    private static void checkEquals() {
+        //     Проверки сравнения через equals()
+
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
         //объекты равны
-        System.out.println(array[6]);
-        System.out.println(array[7]);
-        if (array[7].equals(array[6])) {
+        System.out.println(message3);
+        System.out.println(message2);
+        if (message2.equals(message3)) {
             System.out.println("OK");
         } else System.out.println("NOT OK");
 
         //объекты не равны
-        System.out.println(array[6]);
-        System.out.println(array[7]);
-        if (array[7].equals(array[5])) {
+        System.out.println(message1);
+        System.out.println(message2);
+        if (message2.equals(message1)) {
             System.out.println("OK");
         } else System.out.println("NOT OK");
+    }
 
+    private static void checkEqualsAndHash() {
+        //Проверка выполнения контракта equals()/hashCode()
 
-//        Проверки, когда приходит null в messages и message
+        Message message1 = new Message(Severity.MAJOR, "message");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        System.out.println(message1);
+        System.out.println(message2);
+        if (message2.hashCode() == message1.hashCode()) {
+            System.out.println("OK");
+        }
+    }
+
+    private static void checkValidateParams(){
+        //Проверки метода на валидацию входных параметров
+
         messageService.print(null, null);
-        messageService.print(message);
-        messageService.print(null, array);
 
-//        Проверка метода api MessageService.print без параметра сортировкки
-        messageService.print(array[0], array);
-//        Проверки метода api MessageService.print с параметром сортировки
-        messageService.print(MessageOrder.ASC, array[0], array);
-        messageService.print(MessageOrder.DESC, array[0], array);
+        messageService.print(new Message(Severity.MAJOR, "message"));
 
-//        Проверки метода api MessageService.print с параметром сортировки и с параметром distinct
-        messageService.print(Doubling.DISTINCT, MessageOrder.ASC, array[0], array);
-        messageService.print(Doubling.DISTINCT, MessageOrder.DESC, array[0], array);
-//        Проверки метода api MessageService.print с параметром сортировки и с параметром doubles
-        messageService.print(Doubling.DOUBLES, MessageOrder.ASC, array[0], array);
-        messageService.print(Doubling.DOUBLES, MessageOrder.DESC, array[0], array);
+        Message[] messages = new Message[2];
+        messages[0] = new Message(Severity.MAJOR, "message1");
+        messages[1] = new Message("message1");
+        messageService.print(null, messages);
+
+        messageService.print(null, messages[0],messages);
+
+        messageService.print(null, MessageOrder.ASC, new Message("message"),
+                new Message(Severity.MAJOR, "message2"),
+                new Message("message"));
 
     }
+
+    private static void checkDoubling(Doubling doubling) {
+        //Проверки метода с параметрами дублирования
+
+        messageService.print(doubling, MessageOrder.DESC, new Message("message"),
+                new Message(Severity.MAJOR, "message2"),
+                new Message("message"));
+
+        messageService.print(doubling, MessageOrder.ASC, new Message("message"),
+                new Message(Severity.MAJOR, "message2"),
+                new Message("message"));
+    }
+
+    private static void checkOrder(MessageOrder order){
+        //Проверки метода api MessageService.print с параметром сортировки
+
+        Message[] messages = new Message[2];
+        messages[0] = new Message(Severity.MAJOR, "message1");
+        messages[1] = new Message("message1");
+
+        messageService.print(MessageOrder.ASC, new Message(Severity.MINOR,"message"), messages);
+        messageService.print(MessageOrder.DESC, new Message(Severity.MINOR,"message"), messages);
+    }
+
+    private static void checkPrintMessage(){
+        //Проверки метода без параметров сортировки и дублирования
+        Message[] messages = new Message[2];
+        messages[0] = new Message(Severity.MAJOR, "message1");
+        messages[1] = new Message("message1");
+        messageService.print(new Message(Severity.MINOR,"message"), messages);
+        messageService.print(new Message(Severity.MINOR, "message3"));
+    }
+
 }
 
