@@ -11,7 +11,7 @@ import com.tcs.edu.service.Service;
 
 class Application {
     final static Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
-    final  static MessageService messageService2 = new MessageService(new ConsolePrinter(), new MessageDecorator());
+    final static MessageService messageService2 = new MessageService(new ConsolePrinter(), new MessageDecorator());
 
     public static void main(String[] args) {
         checkEquals();
@@ -25,7 +25,6 @@ class Application {
 
         checkDoubling(Doubling.DISTINCT);
         checkDoubling(Doubling.DOUBLES);
-
 
 
     }
@@ -63,7 +62,7 @@ class Application {
         }
     }
 
-    private static void checkValidateParams(){
+    private static void checkValidateParams() {
         //Проверки метода на валидацию входных параметров
 
         messageService.print(null, null);
@@ -75,7 +74,7 @@ class Application {
         messages[1] = new Message("message1");
         messageService.print(null, messages);
 
-        messageService.print(null, messages[0],messages);
+        //messageService.print(null, messages[0],messages);
 
         messageService.print(null, MessageOrder.ASC, new Message("message"),
                 new Message(Severity.MAJOR, "message2"),
@@ -86,32 +85,31 @@ class Application {
     private static void checkDoubling(Doubling doubling) {
         //Проверки метода с параметрами дублирования
 
-        messageService.print(doubling, MessageOrder.DESC, new Message("message"),
+        /*messageService.print(doubling, MessageOrder.DESC, new Message("message"),
                 new Message(Severity.MAJOR, "message2"),
-                new Message("message"));
+                new Message("message"));*/
 
         messageService.print(doubling, MessageOrder.ASC, new Message("message"),
                 new Message(Severity.MAJOR, "message2"),
                 new Message("message"));
     }
 
-    private static void checkOrder(MessageOrder order){
+    private static void checkOrder(MessageOrder order) {
         //Проверки метода api MessageService.print с параметром сортировки
 
         Message[] messages = new Message[2];
         messages[0] = new Message(Severity.MAJOR, "message1");
         messages[1] = new Message("message1");
 
-        messageService.print(MessageOrder.ASC, new Message(Severity.MINOR,"message"), messages);
-        messageService.print(MessageOrder.DESC, new Message(Severity.MINOR,"message"), messages);
+        messageService.print(order, new Message(Severity.MINOR, "message"), messages);
     }
 
-    private static void checkPrintMessage(){
+    private static void checkPrintMessage() {
         //Проверки метода без параметров сортировки и дублирования
         Message[] messages = new Message[2];
         messages[0] = new Message(Severity.MAJOR, "message1");
         messages[1] = new Message("message1");
-        messageService.print(new Message(Severity.MINOR,"message"), messages);
+        messageService.print(new Message(Severity.MINOR, "message"), messages);
         messageService.print(new Message(Severity.MINOR, "message3"));
     }
 
