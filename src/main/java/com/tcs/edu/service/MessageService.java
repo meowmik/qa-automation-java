@@ -54,12 +54,8 @@ public class MessageService extends ValidatedService implements Service {
      * @param doubling - признак отстутствия или существования дублирования
      */
     public void print(Doubling doubling, MessageOrder order, Message message, Message... messages) {
-        try {
-            isOrderValid(order);
-            isDoublingValid(doubling);
-        } catch (LogException e) {
-            throw new LogException("Параметры в вызове метода переданы неправильно", e);
-        }
+        isOrderValid(order);
+        isDoublingValid(doubling);
         Message[] newMessages = join(message, messages);
         newMessages = cleanNull(newMessages);
         newMessages = sort(order, newMessages);

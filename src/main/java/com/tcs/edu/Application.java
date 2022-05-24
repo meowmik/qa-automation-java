@@ -16,7 +16,7 @@ class Application {
     public static void main(String[] args) {
         checkEquals();
         checkEqualsAndHash();
-        checkValidateParams();
+        //checkValidateParams();
 
         checkPrintMessage();
 
@@ -74,7 +74,7 @@ class Application {
         messages[1] = new Message("message1");
         messageService.print(null, messages);
 
-        //messageService.print(null, messages[0],messages);
+        messageService.print(null, messages[0],messages);
 
         messageService.print(null, MessageOrder.ASC, new Message("message"),
                 new Message(Severity.MAJOR, "message2"),
