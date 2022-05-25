@@ -8,6 +8,7 @@ import com.tcs.edu.printer.Printer;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 
 
 /**
@@ -20,6 +21,7 @@ public class MessageService extends ValidatedService implements Service {
     private final Decorator decorator;
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
     private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
+    private static final MessageRepository messageRepository = new HashMapMessageRepository();
 
     public MessageService(Printer consolePrinter, Decorator messageDecorator) {
         this.decorator = messageDecorator;
@@ -61,6 +63,16 @@ public class MessageService extends ValidatedService implements Service {
         newMessages = sort(order, newMessages);
         newMessages = modifyDoubles(doubling, newMessages);
         privatePrint(newMessages);
+    }
+
+    //Не понимаю, почему нельзя использовать этот метод извне
+    public UUID[] createFew(Message[] messages){
+        Message[] newMessages = cleanNull(messages);
+        return messageRepository.createFew(newMessages);
+    }
+    @Override
+    public UUID create(Message message) {
+        return messageRepository.create(message);
     }
 
     private Message[] join(Message message, Message... messages) {
@@ -129,6 +141,5 @@ public class MessageService extends ValidatedService implements Service {
         }
         return cleanNull(clean);
     }
-
 
 }

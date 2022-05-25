@@ -9,26 +9,43 @@ import com.tcs.edu.printer.ConsolePrinterError;
 import com.tcs.edu.service.MessageService;
 import com.tcs.edu.service.Service;
 
+import java.util.UUID;
+
 class Application {
     final static Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
-    final static MessageService messageService2 = new MessageService(new ConsolePrinter(), new MessageDecorator());
 
     public static void main(String[] args) {
-        checkEquals();
-        checkEqualsAndHash();
-        //checkValidateParams();
+//        checkEquals();
+//        checkEqualsAndHash();
+//        checkValidateParams();
+//
+//        checkPrintMessage();
+//
+//        checkOrder(MessageOrder.ASC);
+//        checkOrder(MessageOrder.DESC);
+//
+//        checkDoubling(Doubling.DISTINCT);
+//        checkDoubling(Doubling.DOUBLES);
 
-        checkPrintMessage();
-
-        checkOrder(MessageOrder.ASC);
-        checkOrder(MessageOrder.DESC);
-
-        checkDoubling(Doubling.DISTINCT);
-        checkDoubling(Doubling.DOUBLES);
-
+        checkHashMapCreate();
 
     }
 
+    private static void checkHashMapCreate(){
+        Message[] messages = new Message[3];
+        messages[0] = new Message("message1");
+        messages[1] = new Message(Severity.MAJOR, "message");
+        messages[2] = new Message(Severity.MAJOR, "message");
+       
+        //Добавление одного сообщения напрямую через create
+        System.out.println(messageService.create(messages[0]));
+        
+        //Добавление нескольких сообщений
+        UUID[] keys =  messageService.createFew(messages);
+        for (UUID id : keys){
+            System.out.println(id);
+        }
+    }
     private static void checkEquals() {
         //     Проверки сравнения через equals()
 
