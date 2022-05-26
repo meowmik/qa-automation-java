@@ -7,6 +7,7 @@ import com.tcs.edu.printer.Printer;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -79,6 +80,11 @@ public class MessageService extends ValidatedService implements Service {
     @Override
     public Message findByPrimaryKey(UUID key) {
         return messageRepository.findByPrimaryKey(key);
+    }
+
+    @Override
+    public Collection<Message> findAll() {
+        return messageRepository.findAll();
     }
 
     private Message[] join(Message message, Message... messages) {

@@ -8,6 +8,7 @@ import com.tcs.edu.printer.ConsolePrinter;
 import com.tcs.edu.service.MessageService;
 import com.tcs.edu.service.Service;
 
+import java.util.Collection;
 import java.util.UUID;
 
 class Application {
@@ -26,10 +27,22 @@ class Application {
 //        checkDoubling(Doubling.DISTINCT);
 //        checkDoubling(Doubling.DOUBLES);
 
-        checkHashMapCreateAndRead();
+//        checkHashMapCreateAndRead();
+        checkHashMapFewMessages();
 
     }
 
+    private static void checkHashMapFewMessages() {
+        Message[] messages = new Message[3];
+        messages[0] = new Message("message1");
+        messages[1] = new Message(Severity.MAJOR, "message");
+        messages[2] = new Message(Severity.MAJOR, "message");
+        messageService.createFew(messages);
+        Collection<Message> allMessage = messageService.findAll();
+        for(Message current : allMessage){
+            System.out.println(current);
+        }
+    }
 
 
     private static void checkHashMapCreateAndRead(){
