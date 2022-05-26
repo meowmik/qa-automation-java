@@ -1,11 +1,10 @@
 package com.tcs.edu.service;
 
 import com.tcs.edu.Message;
+import com.tcs.edu.decorator.Severity;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HashMapMessageRepository implements MessageRepository{
     private Map<UUID, Message> messages = new HashMap<>();
@@ -35,5 +34,23 @@ public class HashMapMessageRepository implements MessageRepository{
     @Override
     public Collection<Message> findAll() {
         return messages.values();
+    }
+
+    @Override
+    public Collection<Message> findBySeverity(Severity level) {
+        return messages.values().stream()
+                .filter(message -> message.getLevel() == level)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Message> findBySeverity2(Severity level) {
+        Collection<Message> filteredMessages = new ArrayList<>();
+        for(Message current : messages.values()){
+            if(current.getLevel() == level){
+                filteredMessages.add(current);
+            }
+        }
+        return filteredMessages;
     }
 }

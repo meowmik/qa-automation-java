@@ -87,6 +87,16 @@ public class MessageService extends ValidatedService implements Service {
         return messageRepository.findAll();
     }
 
+    @Override
+    public Collection<Message> findBySeverity(Severity level) {
+        return messageRepository.findBySeverity(level);
+    }
+
+    @Override
+    public Collection<Message> findBySeverity2(Severity level) {
+        return messageRepository.findBySeverity2(level);
+    }
+
     private Message[] join(Message message, Message... messages) {
         if (!isArrayValid(messages)) {
             return new Message[]{message};

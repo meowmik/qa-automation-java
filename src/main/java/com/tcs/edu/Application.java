@@ -28,8 +28,25 @@ class Application {
 //        checkDoubling(Doubling.DOUBLES);
 
 //        checkHashMapCreateAndRead();
-        checkHashMapFewMessages();
+//        checkHashMapFewMessages();
+        checkHashMapFindByLevel();
 
+    }
+
+    private static void checkHashMapFindByLevel() {
+        Message[] messages = new Message[3];
+        messages[0] = new Message("message1");
+        messages[1] = new Message(Severity.MAJOR, "message");
+        messages[2] = new Message(Severity.MAJOR, "message");
+        messageService.createFew(messages);
+        Collection<Message> messages1 = messageService.findBySeverity(Severity.REGULAR);
+        for(Message current : messages1){
+            System.out.println(current);
+        }
+        Collection<Message> messages2 = messageService.findBySeverity2(Severity.MAJOR);
+        for(Message current : messages2){
+            System.out.println(current);
+        }
     }
 
     private static void checkHashMapFewMessages() {
