@@ -7,4 +7,5 @@ import java.util.UUID;
 public interface MessageRepository {
     UUID create(Message message);
     UUID[] createFew(Message[] messages);
+    Message findByPrimaryKey(UUID key);
 }

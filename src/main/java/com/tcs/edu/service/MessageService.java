@@ -65,14 +65,20 @@ public class MessageService extends ValidatedService implements Service {
         privatePrint(newMessages);
     }
 
-    //Не понимаю, почему нельзя использовать этот метод извне
     public UUID[] createFew(Message[] messages){
         Message[] newMessages = cleanNull(messages);
         return messageRepository.createFew(newMessages);
     }
+
+
     @Override
     public UUID create(Message message) {
         return messageRepository.create(message);
+    }
+
+    @Override
+    public Message findByPrimaryKey(UUID key) {
+        return messageRepository.findByPrimaryKey(key);
     }
 
     private Message[] join(Message message, Message... messages) {

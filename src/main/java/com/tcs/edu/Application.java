@@ -5,7 +5,6 @@ import com.tcs.edu.decorator.MessageDecorator;
 import com.tcs.edu.decorator.MessageOrder;
 import com.tcs.edu.decorator.Severity;
 import com.tcs.edu.printer.ConsolePrinter;
-import com.tcs.edu.printer.ConsolePrinterError;
 import com.tcs.edu.service.MessageService;
 import com.tcs.edu.service.Service;
 
@@ -27,23 +26,28 @@ class Application {
 //        checkDoubling(Doubling.DISTINCT);
 //        checkDoubling(Doubling.DOUBLES);
 
-        checkHashMapCreate();
+        checkHashMapCreateAndRead();
 
     }
 
-    private static void checkHashMapCreate(){
+
+
+    private static void checkHashMapCreateAndRead(){
         Message[] messages = new Message[3];
         messages[0] = new Message("message1");
         messages[1] = new Message(Severity.MAJOR, "message");
         messages[2] = new Message(Severity.MAJOR, "message");
        
         //Добавление одного сообщения напрямую через create
-        System.out.println(messageService.create(messages[0]));
+        UUID key = messageService.create(messages[0]);
+        System.out.println(key);
+        System.out.println(messageService.findByPrimaryKey(key));
         
         //Добавление нескольких сообщений
         UUID[] keys =  messageService.createFew(messages);
         for (UUID id : keys){
             System.out.println(id);
+            System.out.println(messageService.findByPrimaryKey(id));
         }
     }
     private static void checkEquals() {
