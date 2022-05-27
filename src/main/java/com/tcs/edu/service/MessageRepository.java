@@ -8,9 +8,10 @@ import java.util.UUID;
 
 public interface MessageRepository {
     UUID create(Message message);
-    UUID[] createFew(Message[] messages);
     Message findByPrimaryKey(UUID key);
     Collection<Message> findAll();
     Collection<Message> findBySeverity(Severity level);
-    Collection<Message> findBySeverity2(Severity level);
+    void delete(UUID id);
+    Message update(UUID id, Message message);
+
 }

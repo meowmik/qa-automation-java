@@ -15,6 +15,11 @@ public class Message {
         this.level = level;
         this.body = body;
     }
+    public Message(UUID id, Severity level, String body) {
+        this.level = level;
+        this.body = body;
+        this.id = id;
+    }
 
     public Message(String body) {
         this(Severity.REGULAR, body);
@@ -38,7 +43,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return String.format("%s %s", body, ChoiceSeverity.choiceSeverity(level));
+        return String.format("%s %s %s", id, body, ChoiceSeverity.choiceSeverity(level));
     }
 
     @Override

@@ -5,14 +5,15 @@ import com.tcs.edu.decorator.MessageDecorator;
 import com.tcs.edu.decorator.MessageOrder;
 import com.tcs.edu.decorator.Severity;
 import com.tcs.edu.printer.ConsolePrinter;
-import com.tcs.edu.service.MessageService;
-import com.tcs.edu.service.Service;
+import com.tcs.edu.service.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 class Application {
     final static Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
+    final static CrudService messageRepository = new CrudServiceImpl(new HashMapMessageRepository());
 
     public static void main(String[] args) {
 //        checkEquals();
@@ -28,58 +29,67 @@ class Application {
 //        checkDoubling(Doubling.DOUBLES);
 
 //        checkHashMapCreateAndRead();
-//        checkHashMapFewMessages();
-        checkHashMapFindByLevel();
+//        checkHashMapGetAll();
+
+//        chekDelete();
+        chekUpdate();
+
+//        System.out.println(checkHashMapFindByLevel(Severity.REGULAR));
+//        System.out.println(checkHashMapFindByLevel(Severity.MAJOR));
 
     }
 
-    private static void checkHashMapFindByLevel() {
-        Message[] messages = new Message[3];
-        messages[0] = new Message("message1");
-        messages[1] = new Message(Severity.MAJOR, "message");
-        messages[2] = new Message(Severity.MAJOR, "message");
-        messageService.createFew(messages);
-        Collection<Message> messages1 = messageService.findBySeverity(Severity.REGULAR);
-        for(Message current : messages1){
-            System.out.println(current);
-        }
-        Collection<Message> messages2 = messageService.findBySeverity2(Severity.MAJOR);
-        for(Message current : messages2){
-            System.out.println(current);
-        }
+    private static void chekUpdate() {
+        Message message = new Message(Severity.MAJOR, "message");
+        Message message1 = new Message(Severity.REGULAR, "message1");
+
+        UUID id = messageRepository.post(message);
+        System.out.println(messageRepository.getById(id));
+        System.out.println(messageRepository.update(id, message1));
     }
 
-    private static void checkHashMapFewMessages() {
-        Message[] messages = new Message[3];
-        messages[0] = new Message("message1");
-        messages[1] = new Message(Severity.MAJOR, "message");
-        messages[2] = new Message(Severity.MAJOR, "message");
-        messageService.createFew(messages);
-        Collection<Message> allMessage = messageService.findAll();
-        for(Message current : allMessage){
-            System.out.println(current);
-        }
+    private static void chekDelete() {
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
+        UUID id = messageRepository.post(message1);
+        messageRepository.post(message2);
+        System.out.println(messageRepository.getAll());
+        messageRepository.delete(id);
+        System.out.println(messageRepository.getAll());
+    }
+
+    private static void checkHashMapGetAll() {
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
+        messageRepository.post(message1);
+        messageRepository.post(message2);
+        messageRepository.post(message3);
+
+        System.out.println(messageRepository.getAll());
+    }
+
+    private static void checkHashMapCreateAndRead() {
+        Message message = new Message(Severity.MAJOR, "message");
+        UUID id = messageRepository.post(message);
+        System.out.println(id);
+        System.out.println(messageRepository.getById(id));
+    }
+
+    private static Collection<Message> checkHashMapFindByLevel(Severity level) {
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
+        messageRepository.post(message1);
+        messageRepository.post(message2);
+        messageRepository.post(message3);
+
+        return messageRepository.getBySeverity(level);
     }
 
 
-    private static void checkHashMapCreateAndRead(){
-        Message[] messages = new Message[3];
-        messages[0] = new Message("message1");
-        messages[1] = new Message(Severity.MAJOR, "message");
-        messages[2] = new Message(Severity.MAJOR, "message");
-       
-        //Добавление одного сообщения напрямую через create
-        UUID key = messageService.create(messages[0]);
-        System.out.println(key);
-        System.out.println(messageService.findByPrimaryKey(key));
-        
-        //Добавление нескольких сообщений
-        UUID[] keys =  messageService.createFew(messages);
-        for (UUID id : keys){
-            System.out.println(id);
-            System.out.println(messageService.findByPrimaryKey(id));
-        }
-    }
+
     private static void checkEquals() {
         //     Проверки сравнения через equals()
 

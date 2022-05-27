@@ -12,18 +12,9 @@ public class HashMapMessageRepository implements MessageRepository{
     @Override
     public UUID create(Message message) {
         final UUID key = UUID.randomUUID();
+        message.setId(key);
         messages.put(key,message);
         return key;
-    }
-
-    @Override
-    public UUID[] createFew(Message[] messages) {
-        UUID[] keys = new UUID[messages.length];
-        int i=0;
-        for (Message current: messages){
-            keys[i++] = create(current);
-        }
-        return keys;
     }
 
     @Override
@@ -44,13 +35,15 @@ public class HashMapMessageRepository implements MessageRepository{
     }
 
     @Override
-    public Collection<Message> findBySeverity2(Severity level) {
-        Collection<Message> filteredMessages = new ArrayList<>();
-        for(Message current : messages.values()){
-            if(current.getLevel() == level){
-                filteredMessages.add(current);
-            }
-        }
-        return filteredMessages;
+    public void delete(UUID id){
+        messages.remove(id);
     }
+
+    @Override
+    public Message update(UUID id, Message message) {
+        message.setId(id);
+        messages.put(id, message);
+        return findByPrimaryKey(message.getId());
+    }
+
 }

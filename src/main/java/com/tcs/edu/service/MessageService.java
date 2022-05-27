@@ -22,7 +22,7 @@ public class MessageService extends ValidatedService implements Service {
     private final Decorator decorator;
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
     private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
-    private static final MessageRepository messageRepository = new HashMapMessageRepository();
+    private final MessageRepository messageRepository = new HashMapMessageRepository();
 
     public MessageService(Printer consolePrinter, Decorator messageDecorator) {
         this.decorator = messageDecorator;
@@ -64,37 +64,6 @@ public class MessageService extends ValidatedService implements Service {
         newMessages = sort(order, newMessages);
         newMessages = modifyDoubles(doubling, newMessages);
         privatePrint(newMessages);
-    }
-
-    public UUID[] createFew(Message[] messages){
-        Message[] newMessages = cleanNull(messages);
-        return messageRepository.createFew(newMessages);
-    }
-
-
-    @Override
-    public UUID create(Message message) {
-        return messageRepository.create(message);
-    }
-
-    @Override
-    public Message findByPrimaryKey(UUID key) {
-        return messageRepository.findByPrimaryKey(key);
-    }
-
-    @Override
-    public Collection<Message> findAll() {
-        return messageRepository.findAll();
-    }
-
-    @Override
-    public Collection<Message> findBySeverity(Severity level) {
-        return messageRepository.findBySeverity(level);
-    }
-
-    @Override
-    public Collection<Message> findBySeverity2(Severity level) {
-        return messageRepository.findBySeverity2(level);
     }
 
     private Message[] join(Message message, Message... messages) {
