@@ -44,8 +44,9 @@ class Application {
         Message message1 = new Message(Severity.REGULAR, "message1");
 
         UUID id = messageRepository.post(message);
+        message1.setId(id);
         System.out.println(messageRepository.getById(id));
-        System.out.println(messageRepository.update(id, message1));
+        System.out.println(messageRepository.update(message1));
     }
 
     private static void chekDelete() {

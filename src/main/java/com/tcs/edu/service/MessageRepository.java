@@ -12,6 +12,7 @@ public interface MessageRepository {
     Collection<Message> findAll();
     Collection<Message> findBySeverity(Severity level);
     void delete(UUID id);
-    Message update(UUID id, Message message);
+    Message update( Message message);
+
 
 }

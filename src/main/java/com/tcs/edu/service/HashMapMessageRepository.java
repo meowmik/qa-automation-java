@@ -40,10 +40,11 @@ public class HashMapMessageRepository implements MessageRepository{
     }
 
     @Override
-    public Message update(UUID id, Message message) {
-        message.setId(id);
-        messages.put(id, message);
+    public Message update(Message message) {
+        messages.put(message.getId(), message);
         return findByPrimaryKey(message.getId());
     }
+
+
 
 }

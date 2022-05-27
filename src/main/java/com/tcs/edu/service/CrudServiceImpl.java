@@ -35,8 +35,8 @@ public class CrudServiceImpl implements CrudService{
     }
 
     @Override
-    public Message update(UUID id, Message message) {
-        return messageRepository.update(id, message);
+    public Message update(Message message) {
+        return messageRepository.update(message);
     }
 
     @Override

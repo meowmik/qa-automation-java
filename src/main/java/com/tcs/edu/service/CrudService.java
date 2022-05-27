@@ -11,6 +11,6 @@ public interface CrudService {
     Message getById(UUID id);
     Collection<Message> getBySeverity(Severity level);
     Collection<Message> getAll();
-    Message update(UUID id, Message message);
+    Message update(Message message);
     void delete(UUID id);
 }
