@@ -5,29 +5,91 @@ import com.tcs.edu.decorator.MessageDecorator;
 import com.tcs.edu.decorator.MessageOrder;
 import com.tcs.edu.decorator.Severity;
 import com.tcs.edu.printer.ConsolePrinter;
-import com.tcs.edu.printer.ConsolePrinterError;
-import com.tcs.edu.service.MessageService;
-import com.tcs.edu.service.Service;
+import com.tcs.edu.service.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
 class Application {
     final static Service messageService = new MessageService(new ConsolePrinter(), new MessageDecorator());
-    final static MessageService messageService2 = new MessageService(new ConsolePrinter(), new MessageDecorator());
+    final static CrudService messageRepository = new CrudServiceImpl(new HashMapMessageRepository());
 
     public static void main(String[] args) {
-        checkEquals();
-        checkEqualsAndHash();
-        //checkValidateParams();
+//        checkEquals();
+//        checkEqualsAndHash();
+//        checkValidateParams();
+//
+//        checkPrintMessage();
+//
+//        checkOrder(MessageOrder.ASC);
+//        checkOrder(MessageOrder.DESC);
+//
+//        checkDoubling(Doubling.DISTINCT);
+//        checkDoubling(Doubling.DOUBLES);
 
-        checkPrintMessage();
+//        checkHashMapCreateAndRead();
+//        checkHashMapGetAll();
 
-        checkOrder(MessageOrder.ASC);
-        checkOrder(MessageOrder.DESC);
+//        chekDelete();
+        chekUpdate();
 
-        checkDoubling(Doubling.DISTINCT);
-        checkDoubling(Doubling.DOUBLES);
-
+//        System.out.println(checkHashMapFindByLevel(Severity.REGULAR));
+//        System.out.println(checkHashMapFindByLevel(Severity.MAJOR));
 
     }
+
+    private static void chekUpdate() {
+        Message message = new Message(Severity.MAJOR, "message");
+        Message message1 = new Message(Severity.REGULAR, "message1");
+
+        UUID id = messageRepository.post(message);
+        message1.setId(id);
+        System.out.println(messageRepository.getById(id));
+        System.out.println(messageRepository.update(message1));
+    }
+
+    private static void chekDelete() {
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
+        UUID id = messageRepository.post(message1);
+        messageRepository.post(message2);
+        System.out.println(messageRepository.getAll());
+        messageRepository.delete(id);
+        System.out.println(messageRepository.getAll());
+    }
+
+    private static void checkHashMapGetAll() {
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
+        messageRepository.post(message1);
+        messageRepository.post(message2);
+        messageRepository.post(message3);
+
+        System.out.println(messageRepository.getAll());
+    }
+
+    private static void checkHashMapCreateAndRead() {
+        Message message = new Message(Severity.MAJOR, "message");
+        UUID id = messageRepository.post(message);
+        System.out.println(id);
+        System.out.println(messageRepository.getById(id));
+    }
+
+    private static Collection<Message> checkHashMapFindByLevel(Severity level) {
+        Message message1 = new Message("message1");
+        Message message2 = new Message(Severity.MAJOR, "message");
+        Message message3 = new Message(Severity.MAJOR, "message");
+        messageRepository.post(message1);
+        messageRepository.post(message2);
+        messageRepository.post(message3);
+
+        return messageRepository.getBySeverity(level);
+    }
+
+
 
     private static void checkEquals() {
         //     Проверки сравнения через equals()

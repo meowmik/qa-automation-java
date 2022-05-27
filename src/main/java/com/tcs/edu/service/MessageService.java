@@ -7,7 +7,9 @@ import com.tcs.edu.printer.Printer;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.UUID;
 
 
 /**
@@ -20,6 +22,7 @@ public class MessageService extends ValidatedService implements Service {
     private final Decorator decorator;
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
     private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
+    private final MessageRepository messageRepository = new HashMapMessageRepository();
 
     public MessageService(Printer consolePrinter, Decorator messageDecorator) {
         this.decorator = messageDecorator;
@@ -129,6 +132,5 @@ public class MessageService extends ValidatedService implements Service {
         }
         return cleanNull(clean);
     }
-
 
 }

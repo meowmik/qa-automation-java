@@ -2,8 +2,6 @@ package com.tcs.edu.decorator;
 
 import java.time.Instant;
 
-import static com.tcs.edu.decorator.ChoiceSeverity.choiceSeverity;
-
 public class MessageDecorator implements Decorator{
     private static final int PAGE_SIZE = 3;
     private static int messageCount = 0;

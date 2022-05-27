@@ -4,14 +4,21 @@ import com.tcs.edu.decorator.ChoiceSeverity;
 import com.tcs.edu.decorator.Severity;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Message {
     private Severity level;
     private String body;
+    private UUID id;
 
     public Message(Severity level, String body) {
         this.level = level;
         this.body = body;
+    }
+    public Message(UUID id, Severity level, String body) {
+        this.level = level;
+        this.body = body;
+        this.id = id;
     }
 
     public Message(String body) {
@@ -26,9 +33,17 @@ public class Message {
         return body;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return String.format("%s %s", body, ChoiceSeverity.choiceSeverity(level));
+        return String.format("%s %s %s", id, body, ChoiceSeverity.choiceSeverity(level));
     }
 
     @Override
