@@ -31,8 +31,8 @@ class Application {
 //        checkHashMapCreateAndRead();
 //        checkHashMapGetAll();
 
-//        chekDelete();
-        chekUpdate();
+        chekDelete();
+//        chekUpdate();
 
 //        System.out.println(checkHashMapFindByLevel(Severity.REGULAR));
 //        System.out.println(checkHashMapFindByLevel(Severity.MAJOR));
@@ -50,6 +50,7 @@ class Application {
     }
 
     private static void chekDelete() {
+        //+
         Message message1 = new Message("message1");
         Message message2 = new Message(Severity.MAJOR, "message");
         Message message3 = new Message(Severity.MAJOR, "message");
@@ -57,10 +58,12 @@ class Application {
         messageRepository.post(message2);
         System.out.println(messageRepository.getAll());
         messageRepository.delete(id);
+        System.out.println(messageRepository.getById(id));
         System.out.println(messageRepository.getAll());
     }
 
     private static void checkHashMapGetAll() {
+        //+
         Message message1 = new Message("message1");
         Message message2 = new Message(Severity.MAJOR, "message");
         Message message3 = new Message(Severity.MAJOR, "message");
@@ -72,6 +75,7 @@ class Application {
     }
 
     private static void checkHashMapCreateAndRead() {
+        //+
         Message message = new Message(Severity.MAJOR, "message");
         UUID id = messageRepository.post(message);
         System.out.println(id);
@@ -79,6 +83,7 @@ class Application {
     }
 
     private static Collection<Message> checkHashMapFindByLevel(Severity level) {
+        //+
         Message message1 = new Message("message1");
         Message message2 = new Message(Severity.MAJOR, "message");
         Message message3 = new Message(Severity.MAJOR, "message");
