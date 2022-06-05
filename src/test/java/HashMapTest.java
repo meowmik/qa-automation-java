@@ -5,10 +5,9 @@ import com.tcs.edu.service.CrudServiceImpl;
 import com.tcs.edu.service.HashMapMessageRepository;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HashMapTest {
@@ -19,9 +18,11 @@ public class HashMapTest {
         Message message = new Message(Severity.MAJOR, "message");
         UUID id = messageRepository.post(message);
 
-        assertTrue(messageRepository.getAll().contains(message));
-        assertEquals(id,message.getId());
-        assertEquals(message, messageRepository.getById(id));
+        //assertEquals(id,message.getId());
+        assertThat(messageRepository.getAll())
+                .contains(message)
+                .hasSize(1)
+                .filteredOnAssertions(one -> assertThat(one.getId()).isEqualTo(id)).contains(message);
     }
 
     @Test
@@ -35,10 +36,11 @@ public class HashMapTest {
         messageRepository.post(message2);
         messageRepository.post(message3);
 
-        assertTrue(messageRepository.getAll().contains(message1));
-        assertTrue(messageRepository.getAll().contains(message2));
-        assertTrue(messageRepository.getAll().contains(message3));
-        assertFalse(messageRepository.getAll().contains(message4));
+        assertThat(messageRepository.getAll())
+                .contains(message1)
+                .contains(message2)
+                .contains(message3)
+                .doesNotContain(message4);
 
     }
 
@@ -51,11 +53,12 @@ public class HashMapTest {
         UUID id = messageRepository.post(message1);
         messageRepository.post(message2);
         messageRepository.delete(id);
-
-        assertTrue(messageRepository.getAll().contains(message2));
-        assertFalse(messageRepository.getAll().contains(message1));
-        IllegalArgumentException trow = assertThrows(IllegalArgumentException.class, () -> messageRepository.getById(id));
-        assertEquals(String.format("Нет значения с id = %s", id), trow.getMessage());
+// Тут не знаю, как в один assert сделать
+        assertThat(messageRepository.getAll())
+                .contains(message2)
+                .doesNotContain(message1);
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> messageRepository.getById(id));
+        assertThat(thrown).hasMessage(String.format("Нет значения с id = %s", id));
     }
 
     @Test
@@ -66,7 +69,7 @@ public class HashMapTest {
         UUID id = messageRepository.post(message1);
         messageRepository.post(message2);
 
-        assertEquals(message1,messageRepository.getById(id));
+        assertThat(messageRepository.getById(id)).isEqualTo(message1);
     }
 
     @Test
@@ -79,11 +82,10 @@ public class HashMapTest {
         messageRepository.post(message2);
         messageRepository.post(message3);
 
-        Collection<Message> major;
-        major = messageRepository.getBySeverity(Severity.MAJOR);
-        assertTrue(major.contains(message2));
-        assertTrue(major.contains(message3));
-        assertFalse(major.contains(message1));
+        assertThat(messageRepository.getBySeverity(Severity.MAJOR))
+                .doesNotContain(message1)
+                .contains(message2)
+                .contains(message3);
     }
 
     @Test
@@ -95,7 +97,8 @@ public class HashMapTest {
         message1.setId(id);
         messageRepository.update(message1);
 
-        assertTrue(messageRepository.getAll().contains(message1));
-        assertFalse(messageRepository.getAll().contains(message));
+        assertThat(messageRepository.getAll())
+                .doesNotContain(message)
+                .contains(message1);
     }
 }
