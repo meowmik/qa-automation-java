@@ -23,6 +23,7 @@ public class HashMapTest {
             UUID id = messageRepository.post(message);
 
             //assertEquals(id,message.getId());
+            //не знаю, как без getAll проверить наличие message
             assertThat(messageRepository.getAll())
                     .contains(message)
                     .hasSize(1)
@@ -39,12 +40,9 @@ public class HashMapTest {
             messageRepository.post(message2);
             messageRepository.delete(id);
 
-            // Тут не знаю, как в один assert сделать
             assertThat(messageRepository.getAll())
                     .contains(message2)
                     .doesNotContain(message1);
-            IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> messageRepository.getById(id));
-            assertThat(thrown).hasMessage(String.format("Нет значения с id = %s", id));
         }
 
         @Test
@@ -56,9 +54,10 @@ public class HashMapTest {
             message1.setId(id);
             messageRepository.update(message1);
 
-            assertThat(messageRepository.getAll())
-                    .doesNotContain(message)
-                    .contains(message1);
+            assertThat(messageRepository.getById(id))
+                    .isEqualTo(message1);
+            assertThat(messageRepository.getById(id).getId())
+                    .isEqualTo(id);
         }
     }
 
@@ -96,6 +95,20 @@ public class HashMapTest {
         }
 
         @Test
+        public void getNotExistentElementById() {
+            Message message1 = new Message("message1");
+            Message message2 = new Message(Severity.MAJOR, "message");
+
+            UUID id = messageRepository.post(message1);
+            messageRepository.delete(id);
+
+            IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> messageRepository.getById(id));
+            assertThat(thrown).hasMessage(String.format("Нет значения с id = %s", id));
+        }
+
+
+
+        @Test
         public void getElementsByLevel() {
             Message message1 = new Message("message1");
             Message message2 = new Message(Severity.MAJOR, "message");
@@ -106,9 +119,9 @@ public class HashMapTest {
             messageRepository.post(message3);
 
             assertThat(messageRepository.getBySeverity(Severity.MAJOR))
-                    .doesNotContain(message1)
                     .contains(message2)
-                    .contains(message3);
+                    .contains(message3)
+                    .hasSize(2);
         }
     }
 }
