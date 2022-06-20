@@ -6,6 +6,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.*;
@@ -14,24 +15,31 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class CrudCountryWithDBTest {
-    private Connection connection;
+    private static Connection connection;
 
     private static String PATH = "/api/countries";
     private static String PATH_WITH_ID = PATH + "/{id}";
 
     private Integer createdCountryId;
 
-    @BeforeEach
-    public  void setConnection() throws SQLException {
+    @BeforeAll
+    public static void setConnection() throws SQLException {
         connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/app-db",
+                "jdbc:postgresql://localhost:5432/app-db",
                 "app-db-admin",
                 "P@ssw0rd"
         );
+        Statement sql = connection.createStatement();
+        try {
+            sql.executeUpdate("ALTER TABLE country ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;");
+        } catch (SQLException e){}
+        Statement sql1 = connection.createStatement();
+        sql1.executeUpdate("DELETE FROM country where id<=10;");
+
     }
 
     @AfterEach
-    public  void closeConnection() throws SQLException {
+    public void deleteData() throws SQLException {
         if (createdCountryId != null) {
             PreparedStatement sql = connection.prepareStatement(
                     "DELETE FROM country WHERE id = ?;",
@@ -41,6 +49,10 @@ public class CrudCountryWithDBTest {
             sql.executeUpdate();
             createdCountryId = null;
         }
+    }
+
+    @AfterAll
+    public static void closeConnection() throws SQLException {
         connection.close();
     }
 
@@ -60,6 +72,8 @@ public class CrudCountryWithDBTest {
                 .setContentType(ContentType.JSON)
                 .setAuth(authScheme)
                 .build();
+
+
     }
 
 //    @AfterEach
@@ -242,7 +256,7 @@ public class CrudCountryWithDBTest {
 
         ResultSet resultSet = sql.getGeneratedKeys();
         Integer id = null;
-        while (resultSet.next()){
+        while (resultSet.next()) {
             id = resultSet.getInt(1);
         }
         return id;
@@ -252,10 +266,10 @@ public class CrudCountryWithDBTest {
         PreparedStatement sql1 = connection.prepareStatement(
                 "SELECT * from country where id = ?;"
         );
-        sql1.setInt(1,id);
+        sql1.setInt(1, id);
         ResultSet resultSet1 = sql1.executeQuery();
         String name = null;
-        while (resultSet1.next()){
+        while (resultSet1.next()) {
             name = resultSet1.getString(2);
         }
 
