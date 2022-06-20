@@ -29,13 +29,17 @@ public class CrudCountryWithDBTest {
                 "app-db-admin",
                 "P@ssw0rd"
         );
+    }
+
+    @BeforeEach
+    public void modifyDB() throws SQLException {
         Statement sql = connection.createStatement();
         try {
             sql.executeUpdate("ALTER TABLE country ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;");
-        } catch (SQLException e){}
+        } catch (SQLException e) {
+        }
         Statement sql1 = connection.createStatement();
         sql1.executeUpdate("DELETE FROM country where id<=10;");
-
     }
 
     @AfterEach
@@ -76,22 +80,28 @@ public class CrudCountryWithDBTest {
 
     }
 
-//    @AfterEach
-//    public void deleteCountry() throws SQLException {
-//        if (createdCountryId != null) {
-//            PreparedStatement sql = connection.prepareStatement(
-//                    "DELETE FROM country WHERE id = ?;",
-//                    Statement.RETURN_GENERATED_KEYS
-//            );
-//            sql.setInt(1, createdCountryId);
-//            sql.executeUpdate();
-//            createdCountryId = null;
-//        }
-//    }
-
     @Nested
     class PostTest {
         //Post перестал работать, когда база стала pg, а не встроенная
+        @BeforeEach
+        public void changeTypeId() throws SQLException {
+            Statement sql = connection.createStatement();
+            try {
+                sql.executeUpdate("ALTER TABLE country  ALTER COLUMN id  DROP IDENTITY;");
+            } catch (SQLException e) {
+            }
+
+        }
+
+        @AfterEach
+        public void changeTypeId2() throws SQLException {
+            Statement sql = connection.createStatement();
+            try {
+                sql.executeUpdate("ALTER TABLE country ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;");
+            } catch (SQLException e) {
+            }
+        }
+
         @Test
         public void postSuccessWithoutId() {
             createdCountryId = validatePost(createBody("qe"))
